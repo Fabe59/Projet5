@@ -15,6 +15,3 @@ class Connection:
             db_Info = self.connection.get_server_info()
             print("Connected to MySQL Server version ", db_Info)
     
-    def create_cursor(self):
-        return self.connection.cursor()
-
