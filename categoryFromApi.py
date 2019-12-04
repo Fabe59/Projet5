@@ -13,12 +13,10 @@ class CategoryFromApi:
 
         request = requests.get(self.url, parametres)
         data = request.json()
-        '''print(data)'''
         cat_list = []
         for elt in data['tags'][:10]:
             cat_list.append(elt)
-        '''for cat in cat_list:
-            print(cat)'''
+        #print(cat_list)
 
 
 def main():
