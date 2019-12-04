@@ -1,6 +1,6 @@
 import mysql.connector
 
-class MySQL:
+class Database:
      
     def __init__(self):
         self.host = 'localhost'

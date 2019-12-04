@@ -1,9 +1,9 @@
-from mysql_connect import Connection
+from database import Database
 
 class App:
 
     def run(self):
-        mysql = MySQL()
+        mysql = Database()
         mysql.connect()
         mysql.create_db()
         mysql.create_table_category()
