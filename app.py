@@ -7,6 +7,8 @@ class App:
         mysql.connect()
         mysql.create_db()
         mysql.create_table_category()
+        mysql.create_table_products()
+        mysql.test()
 
 def main():
     app = App()

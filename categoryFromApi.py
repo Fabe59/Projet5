@@ -16,7 +16,11 @@ class CategoryFromApi:
         cat_list = []
         for elt in data['tags'][:10]:
             cat_list.append(elt)
-        #print(cat_list)
+        #for elt in cat_list:
+            #print(elt)
+
+        return cat_list
+
 
 
 def main():

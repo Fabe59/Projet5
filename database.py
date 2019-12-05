@@ -5,7 +5,7 @@ class Database:
     def __init__(self):
         self.host = 'localhost'
         self.user = 'root'
-        self.password = 'XXX'
+        self.password = 'Marsbynight13'
 
     def connect(self):
         self.connection = mysql.connector.connect(host = self.host,
@@ -33,3 +33,31 @@ class Database:
                     """
         cursor.execute(query_table)
 
+    def create_table_products(self):
+        cursor = self.connection.cursor()
+        cursor.execute("USE `Purbeurre`")
+        query_table = """
+                    CREATE TABLE IF NOT EXISTS `Purbeurre`.`products`(
+                    id BIGINT UNSIGNED NOT NULL,
+                    brand VARCHAR(100) NOT NULL,
+                    name VARCHAR(200) NOT NULL UNIQUE,
+                    nutriscore CHAR(1) NOT NULL,
+                    store VARCHAR(200) NOT NULL,
+                    PRIMARY KEY (id));
+                    """
+        cursor.execute(query_table)
+
+    def test(self):
+        cursor = self.connection.cursor()
+        cursor.execute("USE `Purbeurre`")
+        mySql_insert_query = """
+                            INSERT INTO category (name) 
+                            VALUES ('Pizzas')
+                            """
+    
+        cursor = self.connection.cursor()
+        cursor.execute(mySql_insert_query)
+        self.connection.commit()
+        #print(cursor.rowcount, "Record inserted successfully into category table")
+        #cursor.close()
+    
