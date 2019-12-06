@@ -1,11 +1,12 @@
 import mysql.connector
+from categoryFromApi import CategoryFromApi
 
 class Database:
      
     def __init__(self):
         self.host = 'localhost'
         self.user = 'root'
-        self.password = 'xxxxxxxxxx'
+        self.password = 'XXXXX'
 
     def connect(self):
         self.connection = mysql.connector.connect(host = self.host,
@@ -32,6 +33,7 @@ class Database:
                     PRIMARY KEY (id));
                     """
         cursor.execute(query_table)
+        print("Category table created")
 
     def create_table_products(self):
         cursor = self.connection.cursor()
@@ -46,18 +48,17 @@ class Database:
                     PRIMARY KEY (id));
                     """
         cursor.execute(query_table)
+        print("Products table created")
 
-    def test(self):
+    def add_category(self, ordered_cat_list):
         cursor = self.connection.cursor()
         cursor.execute("USE `Purbeurre`")
-        mySql_insert_query = """
-                            INSERT INTO category (name) 
-                            VALUES ('Pizzas')
-                            """
-    
-        cursor = self.connection.cursor()
-        cursor.execute(mySql_insert_query)
-        self.connection.commit()
-        #print(cursor.rowcount, "Record inserted successfully into category table")
-        #cursor.close()
+        insert_query = """
+                    INSERT INTO category (name) 
+                    VALUES (%s)
+                    """
+        for category in ordered_cat_list:
+            cursor.execute(insert_query, (category,))
+            self.connection.commit()
+        print("Category inserted successfully into Category table")
     
