@@ -1,5 +1,7 @@
 from database import Database
 from categoryFromApi import CategoryFromApi
+from productFromApi import ProductFromApi
+
 
 class App:
 
@@ -12,6 +14,10 @@ class App:
         category = CategoryFromApi()
         name_cat = category.get_category()
         mysql.add_category(name_cat)
+        products = ProductFromApi()
+        all_products = products.get_product(name_cat)
+
+
 
 def main():
     app = App()
