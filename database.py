@@ -5,7 +5,7 @@ class Database:
     def __init__(self):
         self.host = 'localhost'
         self.user = 'root'
-        self.password = 'XXXXXXXXXX'
+        self.password = 'XXXXXXXXX'
 
     def connect(self):
         self.connection = mysql.connector.connect(host = self.host,

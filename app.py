@@ -12,10 +12,12 @@ class App:
         mysql.create_table_category()
         mysql.create_table_products()
         category = CategoryFromApi()
-        name_cat = category.get_category()
-        mysql.add_category(name_cat)
+        name_categories = category.get_category()
+        mysql.add_category(name_categories)
         products = ProductFromApi()
-        all_products = products.get_product(name_cat)
+        all_products = {}
+        for name_category in name_categories:
+            all_products['name_categories'] = products.get_product(name_category)
 
 
 
