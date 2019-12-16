@@ -15,9 +15,8 @@ class App:
         name_categories = category.get_category()
         mysql.add_category(name_categories)
         products = ProductFromApi()
-        all_products = {}
         for name_category in name_categories:
-            all_products['name_category'] = products.get_product(name_category)
+            products.get_product(name_category)
 
 
 

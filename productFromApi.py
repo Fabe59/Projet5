@@ -23,10 +23,10 @@ class ProductFromApi:
             product = {}
             for key in keys:
                 product[key] = element.get(key)
-            if all(product.values()):  # teste si toutes les clés de 'products' ont un valeur
+            if all(product.values()):  # teste si toutes les clés de 'products' ont une valeur
                 products_list.append(product)
         #for elt in products_list:
-        #    print(elt)
+        print(products_list)
 
                         
 def main():

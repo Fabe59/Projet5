@@ -62,7 +62,7 @@ class Database:
             self.connection.commit()
         print("Category inserted successfully into Category table")
 
-    '''def add_product(self, product_list):
+    def add_product(self, product_list):
         cursor = self.connection.cursor()
         cursor.execute("USE `Purbeurre`")
         insert_query = """
@@ -73,7 +73,7 @@ class Database:
         for product in product_list:
             cursor.execute(insert_query, (brand, product_name_fr, nutrition_grade_fr, store))
             self.connection.commit()
-        print("Products inserted successfully into Products table")'''
+        print("Products inserted successfully into Products table")
 
 
     
