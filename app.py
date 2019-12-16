@@ -17,7 +17,7 @@ class App:
         products = ProductFromApi()
         all_products = {}
         for name_category in name_categories:
-            all_products['name_categories'] = products.get_product(name_category)
+            all_products['name_category'] = products.get_product(name_category)
 
 
 
