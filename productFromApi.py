@@ -5,7 +5,7 @@ class ProductFromApi:
     def __init__(self):
         self.url = 'https://fr.openfoodfacts.org/cgi/search.pl'
 
-    def get_product(self, cat):
+    def get_products(self, cat):
         parametres = {
             "action": "process",
             "tagtype_0": "categories",
@@ -25,13 +25,12 @@ class ProductFromApi:
                 product[key] = element.get(key)
             if all(product.values()):  # teste si toutes les clés de 'products' ont une valeur
                 products_list.append(product)
-        #for elt in products_list:
-        print(products_list)
-
+        return products_list
+        
                         
 def main():
     test = ProductFromApi()
-    test.get_product("boissons")
+    test.get_products("boissons")
 
 
 if __name__ == "__main__":

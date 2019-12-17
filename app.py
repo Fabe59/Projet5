@@ -11,12 +11,11 @@ class App:
         mysql.create_db()
         mysql.create_table_category()
         mysql.create_table_products()
-        category = CategoryFromApi()
-        name_categories = category.get_category()
-        mysql.add_category(name_categories)
+        categories = CategoryFromApi()
+        mysql.add_categories(categories.get_categories())
         products = ProductFromApi()
-        for name_category in name_categories:
-            products.get_product(name_category)
+        for name_category in categories.get_categories():
+            mysql.add_products(products.get_products(name_category), name_category)
 
 
 
