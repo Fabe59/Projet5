@@ -28,7 +28,7 @@ class Database:
         cursor.execute("USE `Purbeurre`")
         query_table = """
                     CREATE TABLE IF NOT EXISTS `Purbeurre`.`category`(
-                    id SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
+                    id INT UNSIGNED NOT NULL AUTO_INCREMENT,
                     name VARCHAR(200) NOT NULL UNIQUE,
                     PRIMARY KEY (id))
                     """
@@ -40,15 +40,12 @@ class Database:
         cursor.execute("USE `Purbeurre`")
         query_table = """
                     CREATE TABLE IF NOT EXISTS `Purbeurre`.`products`(
-                    id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
-                    id_category SMALLINT UNSIGNED NOT NULL,
+                    id BIGINT UNSIGNED NOT NULL,
                     brands VARCHAR(100) NOT NULL,
-                    product_name_fr VARCHAR(200) NOT NULL UNIQUE,
+                    product_name_fr VARCHAR(200) NOT NULL,
                     nutrition_grade_fr CHAR(1) NOT NULL,
                     stores VARCHAR(200) NOT NULL,
-                    PRIMARY KEY (id),
-                    CONSTRAINT `fk_id_category`
-                        FOREIGN KEY (`id_category`) REFERENCES `category`(`id`));
+                    PRIMARY KEY (id));
                     """
         cursor.execute(query_table)
         print("Products table successfully created")
@@ -67,17 +64,35 @@ class Database:
 
     def add_products(self, products_list, cat_name):
         insert_query = """
-                    INSERT INTO products (id_category, brands, product_name_fr, nutrition_grade_fr, stores) 
+                    INSERT INTO products (id, brands, product_name_fr, nutrition_grade_fr, stores)
                     VALUES (%s, %s, %s, %s, %s)
                     """
         cursor = self.connection.cursor()
-        query = "SELECT id FROM category WHERE category.name LIKE %s"
-        cursor.execute(query, (cat_name,))
-        cat_id = cursor.fetchone()
         for product in products_list:
-            cursor.execute(insert_query, (cat_id[0], product['brands'], product['product_name_fr'], product['nutrition_grade_fr'], product['stores']))
-            self.connection.commit()
+            cursor.execute("""SELECT id FROM products WHERE id=%(id)s""", product)
+            reponse = cursor.fetchone()
+            if not reponse:
+                cursor.execute(insert_query, (product['id'], product['brands'], product['product_name_fr'], product['nutrition_grade_fr'], product['stores']))
+                self.connection.commit()
         print("Products inserted successfully into Products table")
 
+    def create_table_liaison(self):
+        cursor = self.connection.cursor()
+        cursor.execute("USE `Purbeurre`")
+        query_table = """
+                    CREATE TABLE IF NOT EXISTS `Purbeurre`.`table_liaison`(
+                    id_cat INT UNSIGNED NOT NULL,
+                    id_prod BIGINT UNSIGNED NOT NULL,
+                    PRIMARY KEY (id_cat, id_prod),
+                    CONSTRAINT `fk_id_cat`
+                        FOREIGN KEY (`id_cat`) REFERENCES `category`(`id`),
+                    CONSTRAINT `fk_id_prod`
+                        FOREIGN KEY (`id_prod`) REFERENCES `products`(`id`));
+                    """
+        cursor.execute(query_table)
+        print("Jointure table successfully created")
 
-    
+    def add_liaison(self, cat_name, ordered_cat_list):
+        insert_query = """INSERT INTO table_liaison (id_cat, id_prod) VALUES (%s, %s)"""
+        cursor = self.connection.cursor()
+        

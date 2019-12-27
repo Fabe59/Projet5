@@ -16,7 +16,7 @@ class App:
         products = ProductFromApi()
         for name_category in categories.get_categories():
             mysql.add_products(products.get_products(name_category), name_category)
-
+        mysql.create_table_liaison()
 
 
 def main():

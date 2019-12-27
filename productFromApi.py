@@ -1,5 +1,6 @@
 import requests
 
+
 class ProductFromApi:
 
     def __init__(self):
@@ -17,7 +18,7 @@ class ProductFromApi:
 
         request = requests.get(self.url, parametres)
         data = request.json()
-        keys = ['brands', 'product_name_fr', 'nutrition_grade_fr', 'stores']
+        keys = ['id', 'brands', 'product_name_fr', 'nutrition_grade_fr', 'stores']
         products_list = []
         for element in data['products']:
             product = {}
@@ -26,11 +27,12 @@ class ProductFromApi:
             if all(product.values()):  # teste si toutes les clés de 'products' ont une valeur
                 products_list.append(product)
         return products_list
+        #print(products_list)
         
                         
 def main():
-    test = ProductFromApi()
-    test.get_products("boissons")
+    a = ProductFromApi()
+    a.get_products("boissons")
 
 
 if __name__ == "__main__":

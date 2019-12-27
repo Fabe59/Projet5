@@ -23,7 +23,6 @@ class CategoryFromApi:
         #print(ordered_cat_list)
 
 
-
 def main():
     Category = CategoryFromApi()
     Category.get_categories()
