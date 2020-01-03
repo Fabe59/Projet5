@@ -50,6 +50,22 @@ class Database:
         cursor.execute(query_table)
         print("Products table successfully created")
 
+    def create_categories_products(self):
+        cursor = self.connection.cursor()
+        cursor.execute("USE `Purbeurre`")
+        query_table = """
+                    CREATE TABLE IF NOT EXISTS `Purbeurre`.`categories_products`(
+                    id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+                    id_cat INT UNSIGNED NOT NULL,
+                    id_prod BIGINT UNSIGNED NOT NULL,
+                    CONSTRAINT `fk_id_cat`
+                        FOREIGN KEY (`id_cat`) REFERENCES `category`(`id`),
+                    CONSTRAINT `fk_id_prod`
+                        FOREIGN KEY (`id_prod`) REFERENCES `products`(`id`));
+                    """
+        cursor.execute(query_table)
+        print("Jointure table successfully created")
+
     def add_categories(self, ordered_cat_list):
         cursor = self.connection.cursor()
         cursor.execute("USE `Purbeurre`")
@@ -74,25 +90,7 @@ class Database:
             if not reponse:
                 cursor.execute(insert_query, (product['id'], product['brands'], product['product_name_fr'], product['nutrition_grade_fr'], product['stores']))
                 self.connection.commit()
+                cursor.execute("""SELECT id FROM category WHERE name = %s""", (cat_name,))
+                cat_id = cursor.fetchone()
+                cursor.execute( """INSERT INTO categories_products (id_cat, id_prod) VALUES (%s, %s)""" , (cat_id[0], product['id']))
         print("Products inserted successfully into Products table")
-
-    def create_table_liaison(self):
-        cursor = self.connection.cursor()
-        cursor.execute("USE `Purbeurre`")
-        query_table = """
-                    CREATE TABLE IF NOT EXISTS `Purbeurre`.`table_liaison`(
-                    id_cat INT UNSIGNED NOT NULL,
-                    id_prod BIGINT UNSIGNED NOT NULL,
-                    PRIMARY KEY (id_cat, id_prod),
-                    CONSTRAINT `fk_id_cat`
-                        FOREIGN KEY (`id_cat`) REFERENCES `category`(`id`),
-                    CONSTRAINT `fk_id_prod`
-                        FOREIGN KEY (`id_prod`) REFERENCES `products`(`id`));
-                    """
-        cursor.execute(query_table)
-        print("Jointure table successfully created")
-
-    def add_liaison(self, cat_name, ordered_cat_list):
-        insert_query = """INSERT INTO table_liaison (id_cat, id_prod) VALUES (%s, %s)"""
-        cursor = self.connection.cursor()
-        
