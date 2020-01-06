@@ -13,10 +13,10 @@ class App:
         mysql.create_table_products()
         mysql.create_categories_products()
         categories = CategoryFromApi()
-        categories_id = mysql.add_categories(categories.get_categories())
+        categories_bd = mysql.add_categories(categories.get_categories())
         products = ProductFromApi()
-        for name_category in categories.get_categories():
-            mysql.add_products(products.get_products(name_category), categories_id)
+        for cat in categories_bd:
+            mysql.add_products(products.get_products(cat[1]), cat[0])
 
 
 

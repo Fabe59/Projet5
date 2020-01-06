@@ -76,11 +76,9 @@ class Database:
         ids = []
         for category in ordered_cat_list:
             cursor.execute(insert_query, (category,))
-            cursor.execute("SELECT * FROM category WHERE id = %s", (cursor.lastrowid,))
-            id = cursor.fetchone()
+            id = (cursor.lastrowid, category)
             ids.append(id)
         self.connection.commit()
-        #print(ids)
         return ids
 
     def add_products(self, products_list, cat_id):
@@ -95,5 +93,6 @@ class Database:
             if not reponse:
                 cursor.execute(insert_query, (product['id'], product['brands'], product['product_name_fr'], product['nutrition_grade_fr'], product['stores']))
                 self.connection.commit()
-                #cursor.execute("""INSERT INTO categories_products (id_cat, id_prod) VALUES (%s, %s)""" , (cat_id, product['id']))
+            cursor.execute("""INSERT INTO categories_products (id_cat, id_prod) VALUES (%s, %s)""" , (cat_id, product['id']))
+            self.connection.commit()
         print("Products inserted successfully into Products table")
