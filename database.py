@@ -5,7 +5,7 @@ class Database:
     def __init__(self):
         self.host = 'localhost'
         self.user = 'root'
-        self.password = 'XXXXXXXXXX'
+        self.password = 'Marsbynight13'
 
     def connect(self):
         self.connection = mysql.connector.connect(host = self.host,
@@ -73,12 +73,17 @@ class Database:
                     INSERT INTO category (name) 
                     VALUES (%s)
                     """
+        ids = []
         for category in ordered_cat_list:
             cursor.execute(insert_query, (category,))
-            self.connection.commit()
-        print("Category inserted successfully into Category table")
+            cursor.execute("SELECT * FROM category WHERE id = %s", (cursor.lastrowid,))
+            id = cursor.fetchone()
+            ids.append(id)
+        self.connection.commit()
+        #print(ids)
+        return ids
 
-    def add_products(self, products_list, cat_name):
+    def add_products(self, products_list, cat_id):
         insert_query = """
                     INSERT INTO products (id, brands, product_name_fr, nutrition_grade_fr, stores)
                     VALUES (%s, %s, %s, %s, %s)
@@ -90,7 +95,5 @@ class Database:
             if not reponse:
                 cursor.execute(insert_query, (product['id'], product['brands'], product['product_name_fr'], product['nutrition_grade_fr'], product['stores']))
                 self.connection.commit()
-                cursor.execute("""SELECT id FROM category WHERE name = %s""", (cat_name,))
-                cat_id = cursor.fetchone()
-                cursor.execute( """INSERT INTO categories_products (id_cat, id_prod) VALUES (%s, %s)""" , (cat_id[0], product['id']))
+                #cursor.execute("""INSERT INTO categories_products (id_cat, id_prod) VALUES (%s, %s)""" , (cat_id, product['id']))
         print("Products inserted successfully into Products table")
