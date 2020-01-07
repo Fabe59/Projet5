@@ -1,4 +1,6 @@
-class Menu:
+from dbreading import DbReading
+
+class Interface:
 
     def __init__(self):
         self.running = True
@@ -66,7 +68,7 @@ class Menu:
 
 
 def main():
-    test = Menu()
+    test = Interface()
     test.menu()
 
 if __name__ == "__main__":
