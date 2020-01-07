@@ -39,7 +39,7 @@ class Menu:
             print("A bientôt!")
             self.exit()
         else:
-            print("Vous devez entrer un chiffre au numéro de la catégorie")
+            print("Vous devez entrer un chiffre correspondant au numéro de la catégorie")
             self.categories_menu()
 
     def products_menu(self):
