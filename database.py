@@ -55,9 +55,9 @@ class Database:
         cursor.execute("USE `Purbeurre`")
         query_table = """
                     CREATE TABLE IF NOT EXISTS `Purbeurre`.`categories_products`(
-                    id INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
                     id_cat INT UNSIGNED NOT NULL,
                     id_prod BIGINT UNSIGNED NOT NULL,
+                    PRIMARY KEY (id_cat, id_prod),
                     CONSTRAINT `fk_id_cat`
                         FOREIGN KEY (`id_cat`) REFERENCES `category`(`id`),
                     CONSTRAINT `fk_id_prod`
