@@ -5,7 +5,6 @@ class Interface:
 
     def __init__(self):
         self.running = True
-        self.next = self.menu
         self.dbreading = DbReading()
         self.dbreading.connect()
 
@@ -35,10 +34,11 @@ class Interface:
             print("A bientôt!")
             self.exit()
         else:
-            self.products_menu()
+            self.products_menu(choice)
 
-    def products_menu(self):
-        print("Veuillez choisir un produit de cette catégorie: \n1 = produit1 \n2 = produit2 \n3 = Produit3 \n4 = Retour au menu principal \n5 = Quitter")
+    def products_menu(self, choice):
+        all_products = self.dbreading.get_products_category(choice)
+        self.dbreading.display_products(all_products)
         choice = input()
 
         if choice == "1":

@@ -19,7 +19,6 @@ class DbReading:
         query = """SELECT * FROM category ORDER BY category.id"""
         
         cursor.execute(query)
-
         return cursor.fetchall()
     
     def display_categories(self, all_categories):
@@ -48,8 +47,15 @@ class DbReading:
                 """
         
         cursor.execute(query, (cat_id,))
-        data = cursor.fetchall()
-        print(data)
+        return cursor.fetchall()
+
+        
+     
+
+    def display_products(self, all_products):
+        """Show product list"""
+        for id, product in enumerate(all_products):
+            print(f"{id+1}. {product}")
     
 
 
