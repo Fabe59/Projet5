@@ -1,9 +1,11 @@
 from dbreading import DbReading
+from database import Database
 
 class Interface:
 
     def __init__(self):
         self.running = True
+        self.next = self.menu
         self.dbreading = DbReading()
         self.dbreading.connect()
 
@@ -13,12 +15,10 @@ class Interface:
         choice = input()
 
         if choice == "1":
-            print("Vous avez choisi de substituer un produit.")
             self.categories_menu()
         elif choice == "2":
             print("Vous avez choisi de revoir vos produits subsitués")
         elif choice == "Q":
-            print("A bientôt!")
             self.exit()
         else:
             print("Vous devez entrer un chiffre compris entre 1 et 3")
@@ -27,7 +27,7 @@ class Interface:
     def categories_menu(self):
         all_categories = self.dbreading.get_all_categories()
         self.dbreading.display_categories(all_categories)
-        choice = input()
+        choice = input('Choisisez une catégorie:')
 
         if choice == "A":
             self.menu()
@@ -35,8 +35,7 @@ class Interface:
             print("A bientôt!")
             self.exit()
         else:
-            print("Vous devez entrer un chiffre correspondant au numéro de la catégorie")
-            self.categories_menu()
+            self.products_menu()
 
     def products_menu(self):
         print("Veuillez choisir un produit de cette catégorie: \n1 = produit1 \n2 = produit2 \n3 = Produit3 \n4 = Retour au menu principal \n5 = Quitter")

@@ -24,8 +24,8 @@ class DbReading:
     
     def display_categories(self, all_categories):
         """Displays the list of categories"""
-        for index, categorie in all_categories:
-            print(f"{index}. {categorie}")
+        for cat_id, categorie in all_categories:
+            print(f"{cat_id}. {categorie}")
 
     def get_products_category(self, cat_id):
         cursor = self.connection.cursor()
@@ -50,15 +50,14 @@ class DbReading:
         cursor.execute(query, (cat_id,))
         data = cursor.fetchall()
         print(data)
-
-
+    
 
 
 def main():
     test = DbReading()
     test.connect()
-    all_categories = test.get_all_categories()
-    test.display_categories(all_categories)
+    #all_categories = test.get_all_categories()
+    #test.display_categories(all_categories)
     test.get_products_category(1)
 
 if __name__ == "__main__":
