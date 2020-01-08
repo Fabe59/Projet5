@@ -31,7 +31,6 @@ class DbReading:
         cursor.execute('USE Purbeurre')
         query = """
             SELECT 
-	            products.id, 
 	            products.brands,
 	            products.product_name_fr,
 	            products.nutrition_grade_fr,
@@ -48,8 +47,6 @@ class DbReading:
         
         cursor.execute(query, (cat_id,))
         return cursor.fetchall()
-
-        
      
 
     def display_products(self, all_products):
@@ -64,7 +61,8 @@ def main():
     test.connect()
     #all_categories = test.get_all_categories()
     #test.display_categories(all_categories)
-    test.get_products_category(1)
+    choice = test.get_products_category(1)
+    test.display_products(choice)
 
 if __name__ == "__main__":
     main()

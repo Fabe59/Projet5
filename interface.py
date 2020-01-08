@@ -1,5 +1,4 @@
 from dbreading import DbReading
-from database import Database
 
 class Interface:
 
