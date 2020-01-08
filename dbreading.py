@@ -5,7 +5,7 @@ class DbReading:
     def __init__(self):
         self.host = 'localhost'
         self.user = 'root'
-        self.password = 'Marsbynight13'
+        self.password = '**********'
 
     def connect(self):
         self.connection = mysql.connector.connect(host = self.host,
@@ -20,14 +20,38 @@ class DbReading:
         
         cursor.execute(query)
 
-        #print(cursor.fetchall())
         return cursor.fetchall()
     
     def display_categories(self, all_categories):
         """Displays the list of categories"""
         for index, categorie in all_categories:
             print(f"{index}. {categorie}")
-    
+
+    def get_products_category(self, cat_id):
+        cursor = self.connection.cursor()
+        cursor.execute('USE Purbeurre')
+        query = """
+            SELECT 
+	            products.id, 
+	            products.brands,
+	            products.product_name_fr,
+	            products.nutrition_grade_fr,
+	            products.stores
+            FROM 
+	            Purbeurre.category, Purbeurre.products, Purbeurre.categories_products
+            WHERE
+	            Purbeurre.category.id = Purbeurre.categories_products.id_cat
+                AND
+                Purbeurre.products.id = Purbeurre.categories_products.id_prod
+                AND
+                Purbeurre.categories_products.id_cat = %s
+                """
+        
+        cursor.execute(query, (cat_id,))
+        data = cursor.fetchall()
+        print(data)
+
+
 
 
 def main():
@@ -35,6 +59,7 @@ def main():
     test.connect()
     all_categories = test.get_all_categories()
     test.display_categories(all_categories)
+    test.get_products_category(1)
 
 if __name__ == "__main__":
     main()

@@ -4,10 +4,12 @@ class Interface:
 
     def __init__(self):
         self.running = True
+        self.dbreading = DbReading()
+        self.dbreading.connect()
 
 
     def menu(self):
-        print("Bienvenue, que souhaitez faire?\n1 = Substituer un produit \n2 = Revoir les produits déjà substitués \n3 = Quitter")
+        print("Bienvenue, que souhaitez faire?\n1 = Substituer un produit \n2 = Revoir les produits déjà substitués \nQ = Quitter")
         choice = input()
 
         if choice == "1":
@@ -15,7 +17,7 @@ class Interface:
             self.categories_menu()
         elif choice == "2":
             print("Vous avez choisi de revoir vos produits subsitués")
-        elif choice == "3":
+        elif choice == "Q":
             print("A bientôt!")
             self.exit()
         else:
@@ -23,21 +25,13 @@ class Interface:
             self.menu()
     
     def categories_menu(self):
-        print("Veuillez maintenant choisir une catégorie: \n1 = Boissons \n2 = Yaourts \n3 = Pizzas \n4 = Retour au menu principal \n5 = Quitter")
+        all_categories = self.dbreading.get_all_categories()
+        self.dbreading.display_categories(all_categories)
         choice = input()
 
-        if choice == "1":
-            print("Vous avez choisi la catégorie : 'Boissons'")
-            self.products_menu()
-        elif choice == "2":
-            print("Vous avez choisi la catégorie : 'Yaourts'")
-            self.products_menu()
-        elif choice == "3":
-            print("Vous avez choisi la catégorie : 'Pizzas'")
-            self.products_menu()
-        elif choice == "4":
+        if choice == "A":
             self.menu()
-        elif choice == "5":
+        elif choice == "Q":
             print("A bientôt!")
             self.exit()
         else:
