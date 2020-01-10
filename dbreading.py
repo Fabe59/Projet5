@@ -55,7 +55,7 @@ class DbReading:
         for prod_id, brand, name, nutriscore, stores in all_products:
             print(f"{prod_id}\n MARQUE: {brand.upper()}\n PRODUIT: {name}\n NUTRISCORE: {nutriscore.upper()}\n POINTS DE VENTE: {stores}")
 
-    def get_substitute(self, cat_id, prod_id):
+    def get_all_substitute(self, cat_id, prod_id):
         cursor = self.connection.cursor()
         cursor.execute('USE Purbeurre')
         query = """
@@ -81,12 +81,37 @@ class DbReading:
         cursor.execute(query, (cat_id, prod_id,))
         return cursor.fetchall()
 
-    def display_substitute(self, all_substitute):
+    def display_all_substitute(self, all_substitute):
         """Show product list"""
         for prod_id, brand, name, nutriscore, stores in all_substitute:
             print(f"{prod_id}\n MARQUE: {brand.upper()}\n PRODUIT: {name}\n NUTRISCORE: {nutriscore.upper()}\n POINTS DE VENTE: {stores}")
-        
-        
+    
+    def one_substitute(self, choiseS):
+        cursor = self.connection.cursor()
+        cursor.execute('USE Purbeurre')
+        query = """
+            SELECT 
+                products.id,
+	            products.brands,
+	            products.product_name_fr,
+	            products.nutrition_grade_fr,
+                products.stores
+            FROM 
+	            Purbeurre.category, Purbeurre.products, Purbeurre.categories_products
+            WHERE
+	            Purbeurre.category.id = Purbeurre.categories_products.id_cat
+                AND
+                Purbeurre.products.id = Purbeurre.categories_products.id_prod
+                AND
+                Purbeurre.categories_products.id_prod = %s
+                """
+        cursor.execute(query, (choiseS,))
+        one = cursor.fetchone()
+        print(one)
+
+
+    
+
 
 def main():
     test = DbReading()
@@ -97,6 +122,7 @@ def main():
     #test.display_products(choice)
     all_substitute = test.get_substitute(3, 3033710065066)
     test.display_substitute(all_substitute)
+    test.one_substitute(3251490332080)
 
 
 if __name__ == "__main__":

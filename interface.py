@@ -46,11 +46,35 @@ class Interface:
             print("A bientôt!")
             self.exit()
         else:
-            self.substitute(choiceC, choiceP)
+            self.get_all_substitute(choiceC, choiceP)
 
-    def substitute(self, choiceC, choiceP):
-        all_substitute = self.dbreading.get_substitute(choiceC, choiceP)
-        self.dbreading.display_substitute(all_substitute)
+    def get_all_substitute(self, choiceC, choiceP):
+        all_substitute = self.dbreading.get_all_substitute(choiceC, choiceP)
+        self.dbreading.display_all_substitute(all_substitute)
+        choiceS = input("Choisissez un substitut parmi la liste en indiquant son numéro de produit:")
+
+        if choiceS == "A":
+            self.menu()
+        elif choiceS == "Q":
+            print("A bientôt!")
+            self.exit()
+        else:
+            self.one_substitute(choiceS)
+
+    def one_substitute(self, choiceS):
+        self.dbreading.one_substitute(choiceS)
+        save = input('Souhaitez vous en enregistrer ce produit? (O pour Oui, N pour Non)')
+
+        if save == "A":
+            self.menu()
+        elif save == "N" or "Q":
+            print("A bientôt!")
+            self.exit()
+        elif save == "O":
+            pass
+
+
+
 
     def exit(self):
         self.running = False
