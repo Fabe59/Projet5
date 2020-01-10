@@ -23,18 +23,19 @@ class DbReading:
     
     def display_categories(self, all_categories):
         """Displays the list of categories"""
-        for cat_id, categorie in all_categories:
-            print(f"{cat_id}. {categorie}")
+        for index, categorie in all_categories:
+            print(f"{index}. {categorie}")
 
     def get_products_category(self, cat_id):
         cursor = self.connection.cursor()
         cursor.execute('USE Purbeurre')
         query = """
             SELECT 
+                products.id,
 	            products.brands,
 	            products.product_name_fr,
 	            products.nutrition_grade_fr,
-	            products.stores
+                products.stores
             FROM 
 	            Purbeurre.category, Purbeurre.products, Purbeurre.categories_products
             WHERE
@@ -43,26 +44,60 @@ class DbReading:
                 Purbeurre.products.id = Purbeurre.categories_products.id_prod
                 AND
                 Purbeurre.categories_products.id_cat = %s
+            ORDER BY Purbeurre.products.product_name_fr
                 """
         
         cursor.execute(query, (cat_id,))
         return cursor.fetchall()
      
-
     def display_products(self, all_products):
         """Show product list"""
-        for id, product in enumerate(all_products):
-            print(f"{id+1}. {product}")
-    
+        for prod_id, brand, name, nutriscore, stores in all_products:
+            print(f"{prod_id}\n MARQUE: {brand.upper()}\n PRODUIT: {name}\n NUTRISCORE: {nutriscore.upper()}\n POINTS DE VENTE: {stores}")
 
+    def get_substitute(self, cat_id, prod_id):
+        cursor = self.connection.cursor()
+        cursor.execute('USE Purbeurre')
+        query = """
+            SELECT
+	            products.id, 
+	            products.brands,
+	            products.product_name_fr,
+	            products.nutrition_grade_fr,
+	            products.stores
+            FROM 
+	            Purbeurre.category, Purbeurre.products, Purbeurre.categories_products
+            WHERE
+	            Purbeurre.category.id = Purbeurre.categories_products.id_cat
+	            AND
+	            Purbeurre.products.id = Purbeurre.categories_products.id_prod
+	            AND
+	            Purbeurre.categories_products.id_cat= %s
+                AND
+                Purbeurre.products.nutrition_grade_fr < (SELECT products.nutrition_grade_fr FROM Purbeurre.products WHERE id = %s)
+            ORDER BY Purbeurre.products.nutrition_grade_fr
+            LIMIT 10
+                """
+        cursor.execute(query, (cat_id, prod_id,))
+        return cursor.fetchall()
+
+    def display_substitute(self, all_substitute):
+        """Show product list"""
+        for prod_id, brand, name, nutriscore, stores in all_substitute:
+            print(f"{prod_id}\n MARQUE: {brand.upper()}\n PRODUIT: {name}\n NUTRISCORE: {nutriscore.upper()}\n POINTS DE VENTE: {stores}")
+        
+        
 
 def main():
     test = DbReading()
     test.connect()
     #all_categories = test.get_all_categories()
     #test.display_categories(all_categories)
-    choice = test.get_products_category(1)
-    test.display_products(choice)
+    #choice = test.get_products_category(3)
+    #test.display_products(choice)
+    all_substitute = test.get_substitute(3, 3033710065066)
+    test.display_substitute(all_substitute)
+
 
 if __name__ == "__main__":
     main()

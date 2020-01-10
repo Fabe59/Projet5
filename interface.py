@@ -25,35 +25,32 @@ class Interface:
     def categories_menu(self):
         all_categories = self.dbreading.get_all_categories()
         self.dbreading.display_categories(all_categories)
-        choice = input('Choisisez une catégorie:')
+        choiceC = input('Choisisez une catégorie:')
 
-        if choice == "A":
+        if choiceC == "A":
             self.menu()
-        elif choice == "Q":
+        elif choiceC == "Q":
             print("A bientôt!")
             self.exit()
         else:
-            self.products_menu(choice)
+            self.products_menu(choiceC)
 
-    def products_menu(self, choice):
-        all_products = self.dbreading.get_products_category(choice)
+    def products_menu(self, choiceC):
+        all_products = self.dbreading.get_products_category(choiceC)
         self.dbreading.display_products(all_products)
-        choice = input()
+        choiceP = input("Choisissez un produit parmi la liste en indiquant son numéro de produit:")
 
-        if choice == "1":
-            print("Vous avez choisi : produit1")
-        elif choice == "2":
-            print("Vous avez choisi : produit2")
-        elif choice == "3":
-            print("Vous avez choisi : produit3")
-        elif choice == "4":
+        if choiceP == "A":
             self.menu()
-        elif choice == "5":
+        elif choiceP == "Q":
             print("A bientôt!")
             self.exit()
         else:
-            print("Vous devez entrer un chiffre correpondant au numéro du produit")
-            self.products_menu()
+            self.substitute(choiceC, choiceP)
+
+    def substitute(self, choiceC, choiceP):
+        all_substitute = self.dbreading.get_substitute(choiceC, choiceP)
+        self.dbreading.display_substitute(all_substitute)
 
     def exit(self):
         self.running = False
