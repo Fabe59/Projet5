@@ -35,7 +35,8 @@ class DbReading:
 	            products.brands,
 	            products.product_name_fr,
 	            products.nutrition_grade_fr,
-                products.stores
+                products.stores,
+                products.url
             FROM 
 	            Purbeurre.category, Purbeurre.products, Purbeurre.categories_products
             WHERE
@@ -52,8 +53,8 @@ class DbReading:
      
     def display_products(self, all_products):
         """Show product list"""
-        for prod_id, brand, name, nutriscore, stores in all_products:
-            print(f"{prod_id}\n MARQUE: {brand.upper()}\n PRODUIT: {name}\n NUTRISCORE: {nutriscore.upper()}\n POINTS DE VENTE: {stores}")
+        for prod_id, brand, name, nutriscore, stores, url in all_products:
+            print(f"{prod_id}\n MARQUE: {brand.upper()}\n PRODUIT: {name}\n NUTRISCORE: {nutriscore.upper()}\n POINTS DE VENTE: {stores}\n URL: {url}")
 
     def get_all_substitute(self, cat_id, prod_id):
         cursor = self.connection.cursor()
@@ -64,7 +65,8 @@ class DbReading:
 	            products.brands,
 	            products.product_name_fr,
 	            products.nutrition_grade_fr,
-	            products.stores
+	            products.stores,
+                products.url
             FROM 
 	            Purbeurre.category, Purbeurre.products, Purbeurre.categories_products
             WHERE
@@ -83,8 +85,8 @@ class DbReading:
 
     def display_all_substitute(self, all_substitute):
         """Show product list"""
-        for prod_id, brand, name, nutriscore, stores in all_substitute:
-            print(f"{prod_id}\n MARQUE: {brand.upper()}\n PRODUIT: {name}\n NUTRISCORE: {nutriscore.upper()}\n POINTS DE VENTE: {stores}")
+        for prod_id, brand, name, nutriscore, stores, url in all_substitute:
+            print(f"{prod_id}\n MARQUE: {brand.upper()}\n PRODUIT: {name}\n NUTRISCORE: {nutriscore.upper()}\n POINTS DE VENTE: {stores}\n URL: {url}")
     
     def one_substitute(self, choiseS):
         cursor = self.connection.cursor()
@@ -95,7 +97,8 @@ class DbReading:
 	            products.brands,
 	            products.product_name_fr,
 	            products.nutrition_grade_fr,
-                products.stores
+                products.stores,
+                products.url
             FROM 
 	            Purbeurre.category, Purbeurre.products, Purbeurre.categories_products
             WHERE
@@ -108,6 +111,26 @@ class DbReading:
         cursor.execute(query, (choiseS,))
         one = cursor.fetchone()
         print(one)
+
+    def display_favorite(self):
+        cursor = self.connection.cursor()
+        cursor.execute('USE Purbeurre')
+        query = """
+            SELECT 
+	            products.id,
+	            products.brands,
+	            products.product_name_fr,
+	            products.nutrition_grade_fr,
+	            products.stores,
+	            products.url
+            FROM 
+	            Purbeurre.products, Purbeurre.favorite
+            WHERE
+	            Purbeurre.products.id = Purbeurre.favorite.id_result
+            """
+        cursor.execute(query)
+        reponse = cursor.fetchone()
+        print(reponse)
 
 
     

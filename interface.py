@@ -20,7 +20,9 @@ class Interface:
         if choice == "1":
             self.categories_menu()
         elif choice == "2":
-            print("Vous avez choisi de revoir vos produits subsitués")
+            print("Voici la liste des produits enregistrés lors de vos dernières recherches:")
+            self.dbreading.display_favorite()
+            self.menu()
         elif choice == "Q":
             print('À bientôt!')
             self.exit()
@@ -77,13 +79,13 @@ class Interface:
 
         if save == "A":
             self.menu()
-        elif save == "N" or "Q":
+        elif save == "N":
             print("A bientôt!")
             self.exit()
         elif save == "O":
             self.database.add_favorite(choiceS)
             print("produit sauvegardé")
-            #self.menu()
+            self.menu()
 
 
 
