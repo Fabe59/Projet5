@@ -5,7 +5,7 @@ class Database:
     def __init__(self):
         self.host = 'localhost'
         self.user = 'root'
-        self.password = '**********'
+        self.password = '*********'
 
     def connect(self):
         self.connection = mysql.connector.connect(host = self.host,
@@ -66,6 +66,17 @@ class Database:
         cursor.execute(query_table)
         print("Jointure table successfully created")
 
+    def create_favorite_table(self):
+        cursor = self.connection.cursor()
+        cursor.execute("USE `Purbeurre`")
+        query_table = """
+                    CREATE TABLE IF NOT EXISTS `Purbeurre`.`favorite` (
+                    id_result BIGINT UNSIGNED NOT NULL,
+                    PRIMARY KEY (id_result))
+                    """
+        cursor.execute(query_table)
+        print("Favorite table successfully created")
+
     def add_categories(self, ordered_cat_list):
         cursor = self.connection.cursor()
         cursor.execute("USE `Purbeurre`")
@@ -96,3 +107,11 @@ class Database:
             cursor.execute("""INSERT INTO categories_products (id_cat, id_prod) VALUES (%s, %s)""" , (cat_id, product['id']))
             self.connection.commit()
         print("Products inserted successfully into Products table")
+
+
+    def add_favorite(self, choiceS):
+        insert_query = """INSERT INTO Purbeurre.favorite (id_result) VALUES %s"""
+        cursor = self.connection.cursor()
+        cursor.execute(insert_query, (choiceS,))
+        self.connection.commit()
+        

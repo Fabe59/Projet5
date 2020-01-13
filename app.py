@@ -13,6 +13,7 @@ class App:
         mysql.create_table_category()
         mysql.create_table_products()
         mysql.create_categories_products()
+        mysql.create_favorite_table()
         categories = CategoryFromApi()
         categories_bd = mysql.add_categories(categories.get_categories())
         products = ProductFromApi()
