@@ -5,7 +5,7 @@ class Database:
     def __init__(self):
         self.host = 'localhost'
         self.user = 'root'
-        self.password = '*********'
+        self.password = '**********'
 
     def connect(self):
         self.connection = mysql.connector.connect(host = self.host,
@@ -45,6 +45,7 @@ class Database:
                     product_name_fr VARCHAR(200) NOT NULL,
                     nutrition_grade_fr CHAR(1) NOT NULL,
                     stores VARCHAR(200) NOT NULL,
+                    url VARCHAR(500) NOT NULL,
                     PRIMARY KEY (id));
                     """
         cursor.execute(query_table)
@@ -94,15 +95,15 @@ class Database:
 
     def add_products(self, products_list, cat_id):
         insert_query = """
-                    INSERT INTO products (id, brands, product_name_fr, nutrition_grade_fr, stores)
-                    VALUES (%s, %s, %s, %s, %s)
+                    INSERT INTO products (id, brands, product_name_fr, nutrition_grade_fr, stores, url)
+                    VALUES (%s, %s, %s, %s, %s, %s)
                     """
         cursor = self.connection.cursor()
         for product in products_list:
             cursor.execute("""SELECT id FROM products WHERE id=%(id)s""", product)
             reponse = cursor.fetchone()
             if not reponse:
-                cursor.execute(insert_query, (product['id'], product['brands'], product['product_name_fr'], product['nutrition_grade_fr'], product['stores']))
+                cursor.execute(insert_query, (product['id'], product['brands'], product['product_name_fr'], product['nutrition_grade_fr'], product['stores'], product['url']))
                 self.connection.commit()
             cursor.execute("""INSERT INTO categories_products (id_cat, id_prod) VALUES (%s, %s)""" , (cat_id, product['id']))
             self.connection.commit()

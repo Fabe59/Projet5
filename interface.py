@@ -22,6 +22,7 @@ class Interface:
         elif choice == "2":
             print("Vous avez choisi de revoir vos produits subsitués")
         elif choice == "Q":
+            print('À bientôt!')
             self.exit()
         else:
             print("Vous devez entrer un chiffre compris entre 1 et 3")

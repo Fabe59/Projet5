@@ -18,7 +18,7 @@ class ProductFromApi:
 
         request = requests.get(self.url, parametres)
         data = request.json()
-        keys = ['id', 'brands', 'product_name_fr', 'nutrition_grade_fr', 'stores']
+        keys = ['id', 'brands', 'product_name_fr', 'nutrition_grade_fr', 'stores', 'url']
         products_list = []
         for element in data['products']:
             product = {}
