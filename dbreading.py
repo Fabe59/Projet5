@@ -108,12 +108,6 @@ class DbReading:
         cursor.execute(query, (choiseS,))
         one = cursor.fetchone()
         print(one)
-    
-    def add_favorite(self, choiceS):
-        insert_query = "INSERT INTO Purbeurre.favorite (id_result) VALUES %s"
-        cursor = self.connection.cursor()
-        cursor.execute(insert_query, (choiceS,))
-        self.connection.commit()
 
 
     
