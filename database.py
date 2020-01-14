@@ -73,9 +73,7 @@ class Database:
         query_table = """
                     CREATE TABLE IF NOT EXISTS `Purbeurre`.`favorite` (
                     id_result BIGINT UNSIGNED NOT NULL,
-                    PRIMARY KEY (id_result),
-                    CONSTRAINT `fk_id_result`
-                        FOREIGN KEY (`id_result`) REFERENCES `product` (`id`);
+                    PRIMARY KEY (id_result));
                     """
         cursor.execute(query_table)
         print("Favorite table successfully created")
@@ -110,7 +108,6 @@ class Database:
             cursor.execute("""INSERT INTO categories_products (id_cat, id_prod) VALUES (%s, %s)""" , (cat_id, product['id']))
             self.connection.commit()
         print("Products inserted successfully into Products table")
-
 
     def add_favorite(self, choiceS):
         insert_query = """INSERT INTO Purbeurre.favorite (id_result) VALUES (%s)"""

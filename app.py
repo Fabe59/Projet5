@@ -19,8 +19,6 @@ class App:
         products = ProductFromApi()
         for cat in categories_bd:
             mysql.add_products(products.get_products(cat[1]), cat[0])
-        itf = Interface()
-        itf.menu()
 
 
 

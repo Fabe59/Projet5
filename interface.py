@@ -10,6 +10,8 @@ class Interface:
         self.dbreading.connect()
         self.database = Database()
         self.database.connect()
+        self.commands = ['O', 'N', 'Q', 'A']
+        self.liste = []
 
 
     def menu(self):
@@ -21,20 +23,23 @@ class Interface:
             self.categories_menu()
         elif choice == "2":
             print("Voici la liste des produits enregistrés lors de vos dernières recherches:")
+            self.dbreading.connect()
             self.dbreading.display_favorite()
             self.menu()
         elif choice == "Q":
             print('À bientôt!')
             self.exit()
         else:
-            print("Vous devez entrer un chiffre compris entre 1 et 3")
+            print("Vous devez entrer le chiffre 1 ou 2 ou tapez Q pour quitter")
             self.menu()
     
     def categories_menu(self):
         """method who display all categories"""
         all_categories = self.dbreading.get_all_categories()
+        for number, name in all_categories:
+            self.liste.append(number)
         self.dbreading.display_categories(all_categories)
-        choiceC = input('Choisisez une catégorie:')
+        choiceC = self.input_user('\nChoisisez une catégorie: ')
 
         if choiceC == "A":
             self.menu()
@@ -46,9 +51,12 @@ class Interface:
 
     def products_menu(self, choiceC):
         """method who display all products of a catagory"""
+        print("Voici la liste des produits présents dans la catégorie choisie:")
         all_products = self.dbreading.get_products_category(choiceC)
+        for number, brand, name, nutriscore, stores, url in all_products:
+            self.liste.append(number)
         self.dbreading.display_products(all_products)
-        choiceP = input("Choisissez un produit parmi la liste en indiquant son numéro de produit:")
+        choiceP = self.input_user("Choisissez un produit parmi la liste en indiquant son numéro de produit: ")
 
         if choiceP == "A":
             self.menu()
@@ -60,9 +68,12 @@ class Interface:
 
     def get_all_substitute(self, choiceC, choiceP):
         """method who display all subsitutes"""
+        print("Voici la liste des produits dont le nutriscore est meilleur que celui du produit initial:")
         all_substitute = self.dbreading.get_all_substitute(choiceC, choiceP)
+        for number, brand, name, nutriscore, stores, url in all_substitute:
+            self.liste.append(number)
         self.dbreading.display_all_substitute(all_substitute)
-        choiceS = input("Choisissez un substitut parmi la liste en indiquant son numéro de produit:")
+        choiceS = self.input_user("\nChoisissez un substitut parmi la liste en indiquant son numéro de produit: ")
 
         if choiceS == "A":
             self.menu()
@@ -74,8 +85,10 @@ class Interface:
 
     def one_substitute(self, choiceS):
         """Method who display the substitute choice and ask to the user if he/she wants to save it"""
-        self.dbreading.one_substitute(choiceS)
-        save = input('Souhaitez vous en enregistrer ce produit? (O pour Oui, N pour Non)')
+        print("Vous avez choisi :")
+        one_substitute = self.dbreading.one_substitute(choiceS)
+        self.dbreading.display_one_substitute(one_substitute)
+        save = input('\nSouhaitez vous en enregistrer ce produit? (O pour Oui, N pour Non)')
 
         if save == "A":
             self.menu()
@@ -84,11 +97,28 @@ class Interface:
             self.exit()
         elif save == "O":
             self.database.add_favorite(choiceS)
-            print("produit sauvegardé")
+            print("produit sauvegardé\n")
             self.menu()
+    
+    def input_user(self, message):
+        """User input recovery method"""
+        while True:
+            user = input(message)
 
+            if user in self.commands:
+                return user
 
+            else:
+                try:
+                    user = int(user)
+                    assert user >= 1
+                    assert user in self.liste
+                    break
 
+                except:
+                    print("Choix incorrect \n")
+
+        return user
 
     def exit(self):
         """Method to get out of the loop"""
@@ -98,6 +128,7 @@ class Interface:
 def main():
     test = Interface()
     test.menu()
+
 
 if __name__ == "__main__":
     main()

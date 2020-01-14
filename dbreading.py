@@ -54,7 +54,7 @@ class DbReading:
     def display_products(self, all_products):
         """Show product list"""
         for prod_id, brand, name, nutriscore, stores, url in all_products:
-            print(f"{prod_id}\n MARQUE: {brand.upper()}\n PRODUIT: {name}\n NUTRISCORE: {nutriscore.upper()}\n POINTS DE VENTE: {stores}\n URL: {url}")
+            print(f"\n{prod_id}\n MARQUE: {brand.upper()}\n PRODUIT: {name}\n NUTRISCORE: {nutriscore.upper()}\n POINTS DE VENTE: {stores}\n URL: {url}\n")
 
     def get_all_substitute(self, cat_id, prod_id):
         cursor = self.connection.cursor()
@@ -86,7 +86,7 @@ class DbReading:
     def display_all_substitute(self, all_substitute):
         """Show product list"""
         for prod_id, brand, name, nutriscore, stores, url in all_substitute:
-            print(f"{prod_id}\n MARQUE: {brand.upper()}\n PRODUIT: {name}\n NUTRISCORE: {nutriscore.upper()}\n POINTS DE VENTE: {stores}\n URL: {url}")
+            print(f"\n{prod_id}\n MARQUE: {brand.upper()}\n PRODUIT: {name}\n NUTRISCORE: {nutriscore.upper()}\n POINTS DE VENTE: {stores}\n URL: {url}")
     
     def one_substitute(self, choiseS):
         cursor = self.connection.cursor()
@@ -109,8 +109,19 @@ class DbReading:
                 Purbeurre.categories_products.id_prod = %s
                 """
         cursor.execute(query, (choiseS,))
-        one = cursor.fetchone()
-        print(one)
+        return cursor.fetchall()
+        #print(one)
+
+    def display_one_substitute(self, one_substitute):
+        """Show substitute selected"""
+        for prod_id, brand, name, nutriscore, stores, url in one_substitute:
+            print(f"\n{prod_id}\n MARQUE: {brand.upper()}\n PRODUIT: {name}\n NUTRISCORE: {nutriscore.upper()}\n POINTS DE VENTE: {stores}\n URL: {url}")
+
+    def add_favorite(self, choiceS):
+        insert_query = """INSERT INTO Purbeurre.favorite (id_result) VALUES (%s)"""
+        cursor = self.connection.cursor()
+        cursor.execute(insert_query, (choiceS,))
+        self.connection.commit()
 
     def display_favorite(self):
         cursor = self.connection.cursor()
@@ -129,24 +140,7 @@ class DbReading:
 	            Purbeurre.products.id = Purbeurre.favorite.id_result
             """
         cursor.execute(query)
-        reponse = cursor.fetchone()
-        print(reponse)
-
-
-    
-
-
-def main():
-    test = DbReading()
-    test.connect()
-    #all_categories = test.get_all_categories()
-    #test.display_categories(all_categories)
-    #choice = test.get_products_category(3)
-    #test.display_products(choice)
-    all_substitute = test.get_substitute(3, 3033710065066)
-    test.display_substitute(all_substitute)
-    test.one_substitute(3251490332080)
-
-
-if __name__ == "__main__":
-    main()
+        fav = cursor.fetchall()
+        #print(reponse)
+        for prod_id, brand, name, nutriscore, stores, url in fav:
+            print(f"\n{prod_id}\n MARQUE: {brand.upper()}\n PRODUIT: {name}\n NUTRISCORE: {nutriscore.upper()}\n POINTS DE VENTE: {stores}\n URL: {url}\n")
