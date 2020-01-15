@@ -1,18 +1,16 @@
+from connection import Connection
 from dbreading import DbReading
-from database import Database
+from dbwriting import Database
 
 
 class Interface:
 
-    def __init__(self):
+    def __init__(self, auth):
         self.running = True
-        self.dbreading = DbReading()
-        self.dbreading.connect()
-        self.database = Database()
-        self.database.connect()
+        self.dbreading = DbReading(auth)
+        self.dbwriting = Database(auth)
         self.commands = ['O', 'N', 'Q', 'A']
         self.liste = []
-
 
     def menu(self):
         """method who display home menu"""
@@ -23,7 +21,6 @@ class Interface:
             self.categories_menu()
         elif choice == "2":
             print("Voici la liste des produits enregistrés lors de vos dernières recherches:")
-            self.dbreading.connect()
             self.dbreading.display_favorite()
             self.menu()
         elif choice == "Q":
@@ -81,9 +78,9 @@ class Interface:
             print("A bientôt!")
             self.exit()
         else:
-            self.one_substitute(choiceS)
+            self.one_substitute(choiceP, choiceS)
 
-    def one_substitute(self, choiceS):
+    def one_substitute(self, choiceP, choiceS):
         """Method who display the substitute choice and ask to the user if he/she wants to save it"""
         print("Vous avez choisi :")
         one_substitute = self.dbreading.one_substitute(choiceS)
@@ -96,7 +93,7 @@ class Interface:
             print("A bientôt!")
             self.exit()
         elif save == "O":
-            self.database.add_favorite(choiceS)
+            self.dbwriting.add_favorite(choiceP, choiceS)
             print("produit sauvegardé\n")
             self.menu()
     
@@ -126,8 +123,10 @@ class Interface:
 
 
 def main():
-    test = Interface()
-    test.menu()
+    auth = Connection()
+    auth.connect()
+    interface = Interface(auth)
+    interface.menu()
 
 
 if __name__ == "__main__":

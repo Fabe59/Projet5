@@ -8,7 +8,7 @@ class Connection:
         """Connection information"""
         self.host = 'localhost'
         self.user = 'root'
-        self.password = 'Marsbynight13'
+        self.password = '**************'
 
     def connect(self):
         """Connection method"""
