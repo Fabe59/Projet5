@@ -11,6 +11,7 @@ class Interface:
         self.dbwriting = Database(auth)
         self.commands = ['O', 'N', 'Q', 'A']
         self.liste = []
+        self.cat_number = []
 
     def menu(self):
         """method who display home menu"""
@@ -34,9 +35,9 @@ class Interface:
         """method who display all categories"""
         all_categories = self.dbreading.get_all_categories()
         for number, name in all_categories:
-            self.liste.append(number)
+            self.cat_number.append(number)
         self.dbreading.display_categories(all_categories)
-        choiceC = self.input_user('\nChoisisez une catégorie: ')
+        choiceC = self.inputC_user('\nChoisisez une catégorie: ')
 
         if choiceC == "A":
             self.menu()
@@ -97,8 +98,27 @@ class Interface:
             print("produit sauvegardé\n")
             self.menu()
     
+    def inputC_user(self, message):
+        """Input category user recovery method"""
+        while True:
+            user = input(message)
+
+            if user in self.commands:
+                return user
+
+            else:
+                try:
+                    user = int(user)
+                    assert user in self.cat_number
+                    break
+
+                except:
+                    print("CHOIX DE CATEGORIE INCORRECT \n")
+
+        return user
+    
     def input_user(self, message):
-        """User input recovery method"""
+        """Input user recovery method"""
         while True:
             user = input(message)
 
@@ -113,7 +133,7 @@ class Interface:
                     break
 
                 except:
-                    print("Choix incorrect \n")
+                    print("CHOIX INCORRECT \n")
 
         return user
 
