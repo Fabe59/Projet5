@@ -1,14 +1,14 @@
 from connection import Connection
-from dbreading import DbReading
-from dbwriting import Database
+from dbuser import DbUser
+from dbadmin import DbAdmin
 
 
 class Interface:
 
     def __init__(self, auth):
         self.running = True
-        self.dbreading = DbReading(auth)
-        self.dbwriting = Database(auth)
+        self.dbuser = DbUser(auth)
+        self.dbadmin = DbAdmin(auth)
         self.commands = ['O', 'N', 'Q', 'A']
         self.liste = []
         self.cat_number = []
@@ -22,26 +22,36 @@ class Interface:
         if choice == "1":
             self.categories_menu()
         elif choice == "2":
-            print("Voici la liste des produits enregistrés \
-                lors de vos dernières recherches:")
-            self.dbreading.display_favorite()
+            print("Voici la liste des produits enregistrés "
+                  "lors de vos dernières recherches:")
+            fav = self.dbuser.favorite()
+            for prod_id, brand, name, nutriscore, stores, url in fav:
+                print(f"""
+                {prod_id}
+                MARQUE: {brand.upper()}
+                PRODUIT: {name}
+                NUTRISCORE: {nutriscore.upper()}
+                POINTS DE VENTE: {stores}
+                URL: {url}\n""")
             self.menu()
         elif choice == "Q":
             print('À bientôt!')
             self.exit()
         else:
-            print("Vous devez entrer le chiffre 1 ou 2 \
-                ou tapez Q pour quitter")
+            print("Vous devez entrer le chiffre 1 ou 2 "
+                  "ou tapez Q pour quitter")
             self.menu()
 
     def categories_menu(self):
         """method who display all categories"""
-        all_categories = self.dbreading.get_all_categories()
-        for number, name in all_categories:
-            self.cat_number.append(number)
-        self.dbreading.display_categories(all_categories)
-        choiceC = self.inputC_user("\nChoisisez une catégorie en indiquant son numéro, \
-            'A' pour revenir au menu principal, 'Q' pour Quitter : ")
+        all_categories = self.dbuser.get_all_categories()
+        for index, categorie in all_categories:
+            self.cat_number.append(index)
+            print(f"{index}. {categorie}")
+        choiceC = self.inputC_user(
+                    "Choisisez une catégorie en indiquant son numéro, "
+                    "'A' pour revenir au menu principal, "
+                    "'Q' pour Quitter : ")
 
         if choiceC == "A":
             self.menu()
@@ -54,14 +64,21 @@ class Interface:
     def products_menu(self, choiceC):
         """method who display all products of a catagory"""
         print("Voici la liste des produits présents dans la catégorie:")
-        all_products = self.dbreading.get_products_category(choiceC)
-        for number, brand, name, nutriscore, stores, url in all_products:
-            self.liste.append(number)
-        self.dbreading.display_products(all_products)
-        choiceP = self.input_user("Choisissez un produit parmi la liste en indiquant \
-            son numéro de produit, \
-                'A' pour revenir au menu des categories, \
-                    'Q' pour Quitter : ")
+        all_products = self.dbuser.get_products_category(choiceC)
+        for prod_id, brand, name, nutriscore, stores, url in all_products:
+            self.liste.append(prod_id)
+            print(f"""
+            {prod_id}
+            MARQUE: {brand.upper()}
+            PRODUIT: {name}
+            NUTRISCORE: {nutriscore.upper()}
+            POINTS DE VENTE: {stores}
+            URL: {url}\n""")
+        choiceP = self.input_user(
+            "Choisissez un produit parmi la liste en indiquant, "
+            "son numéro de produit, "
+            "'A' pour revenir au menu des categories, "
+            "'Q' pour Quitter : ")
 
         if choiceP == "A":
             self.categories_menu()
@@ -73,15 +90,23 @@ class Interface:
 
     def get_all_substitute(self, choiceC, choiceP):
         """method who display all subsitutes"""
-        print("Voici la liste des produits dont le nutriscore est meilleur \
-            que celui du produit initial:")
-        all_substitute = self.dbreading.get_all_substitute(choiceC, choiceP)
-        for number, brand, name, nutriscore, stores, url in all_substitute:
-            self.liste.append(number)
-        self.dbreading.display_all_substitute(all_substitute)
-        choiceS = self.input_user("\nChoisissez un substitut parmi la liste en indiquant \
-            son numéro de produit, 'A' pour revenir au menu principal, \
-                'Q' pour Quitter : ")
+        print(
+            "Voici la liste des produits dont le nutriscore est meilleur "
+            "que celui du produit initial:")
+        all_substitute = self.dbuser.get_all_substitute(choiceC, choiceP)
+        for prod_id, brand, name, nutriscore, stores, url in all_substitute:
+            self.liste.append(prod_id)
+            print(f"""
+            {prod_id}
+            MARQUE: {brand.upper()}
+            PRODUIT: {name}
+            NUTRISCORE: {nutriscore.upper()}
+            POINTS DE VENTE: {stores}
+            URL: {url}\n""")
+        choiceS = self.input_user(
+            "Choisissez un substitut parmi la liste en indiquant "
+            "son numéro de produit, 'A' pour revenir au menu principal, "
+            "'Q' pour Quitter : ")
 
         if choiceS == "A":
             self.menu()
@@ -95,10 +120,18 @@ class Interface:
         """Method who display the substitute choice \
             and ask to the user if he/she wants to save it"""
         print("Vous avez choisi :")
-        one_substitute = self.dbreading.one_substitute(choiceS)
-        self.dbreading.display_one_substitute(one_substitute)
-        save = input('\nSouhaitez vous en enregistrer ce produit \
-            (O = Oui, N = Non)?')
+        one_substitute = self.dbuser.one_substitute(choiceS)
+        for prod_id, brand, name, nutriscore, stores, url in one_substitute:
+            print(f"""
+            {prod_id}
+            MARQUE: {brand.upper()}
+            PRODUIT: {name}
+            NUTRISCORE: {nutriscore.upper()}
+            POINTS DE VENTE: {stores}
+            URL: {url}\n""")
+        save = input(
+            "Souhaitez vous en enregistrer ce produit "
+            "(O = Oui, N = Non)?")
 
         if save == "A":
             self.menu()
@@ -106,12 +139,13 @@ class Interface:
             print("A bientôt!")
             self.exit()
         elif save == "O":
-            self.dbwriting.add_favorite(choiceP, choiceS)
+            self.dbuser.add_favorite(choiceS)
             print("produit sauvegardé\n")
             self.menu()
 
     def inputC_user(self, message):
-        """Input category user recovery method"""
+        """Method for retrieving and checking \
+            the category chosen by the user"""
         while True:
             user = input(message)
 
@@ -130,7 +164,8 @@ class Interface:
         return user
 
     def input_user(self, message):
-        """Input user recovery method"""
+        """Method for retrieving and checking the product \
+            and substitute chosen by the user"""
         while True:
             user = input(message)
 

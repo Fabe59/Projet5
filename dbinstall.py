@@ -1,5 +1,5 @@
 from connection import Connection
-from dbwriting import Database
+from dbadmin import DbAdmin
 from categoryFromApi import CategoryFromApi
 from productFromApi import ProductFromApi
 
@@ -9,7 +9,7 @@ class DbInstall:
     def run(self):
         auth = Connection()
         auth.connect()
-        mysql = Database(auth)
+        mysql = DbAdmin(auth)
         mysql.create_db()
         mysql.create_table_category()
         mysql.create_table_products()
@@ -25,6 +25,7 @@ class DbInstall:
 def main():
     db = DbInstall()
     db.run()
+
 
 if __name__ == "__main__":
     main()

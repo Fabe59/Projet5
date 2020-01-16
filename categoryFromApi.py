@@ -2,6 +2,7 @@ import requests
 
 
 class CategoryFromApi:
+    """Class to download the top ten categories""" 
 
     def __init__(self):
         self.url = 'https://fr.openfoodfacts.org/categories/'
@@ -21,12 +22,3 @@ class CategoryFromApi:
         for category in cat_list:
             ordered_cat_list.append(category['name'])
         return ordered_cat_list
-
-
-def main():
-    Category = CategoryFromApi()
-    Category.get_categories()
-
-
-if __name__ == "__main__":
-    main()

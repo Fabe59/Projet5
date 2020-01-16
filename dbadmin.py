@@ -1,14 +1,12 @@
-import mysql.connector
-from connection import Connection
 
-
-class Database:
+class DbAdmin:
 
     def __init__(self, connection):
         """Connection initialization"""
         self.connect = connection
 
     def create_db(self):
+        """Method to create the database"""
         cursor = self.connect.connection.cursor()
         query_db = """
                 CREATE DATABASE IF NOT EXISTS Purbeurre \
@@ -18,6 +16,7 @@ class Database:
         print("Database successfully created")
 
     def create_table_category(self):
+        """Method to create categories table"""
         cursor = self.connect.connection.cursor()
         cursor.execute("USE `Purbeurre`")
         query_table = """
@@ -30,6 +29,7 @@ class Database:
         print("Category table successfully created")
 
     def create_table_products(self):
+        """Method to create products table"""
         cursor = self.connect.connection.cursor()
         cursor.execute("USE `Purbeurre`")
         query_table = """
@@ -46,6 +46,7 @@ class Database:
         print("Products table successfully created")
 
     def create_categories_products(self):
+        """Method to create the association table"""
         cursor = self.connect.connection.cursor()
         cursor.execute("USE `Purbeurre`")
         query_table = """
@@ -63,18 +64,19 @@ class Database:
         print("Jointure table successfully created")
 
     def create_favorite_table(self):
+        """Method to create favorites table"""
         cursor = self.connect.connection.cursor()
         cursor.execute("USE `Purbeurre`")
         query_table = """
                     CREATE TABLE IF NOT EXISTS `Purbeurre`.`favorite` (
-                    id_compared BIGINT UNSIGNED NOT NULL,
                     id_substitute BIGINT UNSIGNED NOT NULL,
-                    PRIMARY KEY (id_compared, id_substitute));
+                    PRIMARY KEY (id_substitute));
                     """
         cursor.execute(query_table)
         print("Favorite table successfully created")
 
     def add_categories(self, ordered_cat_list):
+        """Method for adding categories to the categories table"""
         cursor = self.connect.connection.cursor()
         cursor.execute("USE `Purbeurre`")
         insert_query = """
@@ -90,6 +92,7 @@ class Database:
         return ids
 
     def add_products(self, products_list, cat_id):
+        """method for adding products to the categories table"""
         insert_query = """
                     INSERT INTO products
                         (
@@ -104,6 +107,7 @@ class Database:
                     """
         cursor = self.connect.connection.cursor()
         for product in products_list:
+            """Request to verify that the product isn't already in the table"""
             cursor.execute("""SELECT id FROM products
                                 WHERE id=%(id)s""", product)
             reponse = cursor.fetchone()
@@ -121,9 +125,3 @@ class Database:
             self.connect.connection.commit()
         print("Products inserted successfully into Products table")
 
-    def add_favorite(self, choiceP, choiceS):
-        insert_query = """INSERT IGNORE INTO Purbeurre.favorite
-                            (id_compared, id_substitute) VALUES (%s, %s)"""
-        cursor = self.connect.connection.cursor()
-        cursor.execute(insert_query, (choiceP, choiceS,))
-        self.connect.connection.commit()

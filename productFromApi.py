@@ -4,9 +4,11 @@ import requests
 class ProductFromApi:
 
     def __init__(self):
+        """API url"""
         self.url = 'https://fr.openfoodfacts.org/cgi/search.pl'
 
     def get_products(self, cat):
+        """Search parameters"""
         parametres = {
             "action": "process",
             "tagtype_0": "categories",
@@ -18,6 +20,7 @@ class ProductFromApi:
 
         request = requests.get(self.url, parametres)
         data = request.json()
+        """Selected keywords"""
         keys = ['id', 'brands', 'product_name_fr',
                 'nutrition_grade_fr', 'stores', 'url']
         products_list = []
@@ -26,15 +29,6 @@ class ProductFromApi:
             for key in keys:
                 product[key] = element.get(key)
             if all(product.values()):
-                """test if all 'products' keys have a value"""
+                """Test if all 'products' keys have a value"""
                 products_list.append(product)
         return products_list
-
-
-def main():
-    a = ProductFromApi()
-    a.get_products("boissons")
-
-
-if __name__ == "__main__":
-    main()
