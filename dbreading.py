@@ -13,7 +13,7 @@ class DbReading:
         cursor.execute('USE Purbeurre')
 
         query = """SELECT * FROM category ORDER BY category.id"""
-        
+
         cursor.execute(query)
         return cursor.fetchall()
 
@@ -21,24 +21,27 @@ class DbReading:
         cursor = self.connect.connection.cursor()
         cursor.execute('USE Purbeurre')
         query = """
-            SELECT 
-                products.id,
-	            products.brands,
-	            products.product_name_fr,
-	            products.nutrition_grade_fr,
-                products.stores,
-                products.url
-            FROM 
-	            Purbeurre.category, Purbeurre.products, Purbeurre.categories_products
+            SELECT
+                    products.id,
+                    products.brands,
+                    products.product_name_fr,
+                    products.nutrition_grade_fr,
+                    products.stores,
+                    products.url
+            FROM
+                    Purbeurre.category, Purbeurre.products,
+                        Purbeurre.categories_products
             WHERE
-	            Purbeurre.category.id = Purbeurre.categories_products.id_cat
-                AND
-                Purbeurre.products.id = Purbeurre.categories_products.id_prod
-                AND
-                Purbeurre.categories_products.id_cat = %s
+                    Purbeurre.category.id =
+                        Purbeurre.categories_products.id_cat
+                    AND
+                    Purbeurre.products.id =
+                        Purbeurre.categories_products.id_prod
+                    AND
+                    Purbeurre.categories_products.id_cat = %s
             ORDER BY Purbeurre.products.product_name_fr
                 """
-        
+
         cursor.execute(query, (cat_id,))
         return cursor.fetchall()
 
@@ -47,13 +50,13 @@ class DbReading:
         cursor.execute('USE Purbeurre')
         query = """
             SELECT
-	            products.id, 
+	            products.id,
 	            products.brands,
 	            products.product_name_fr,
 	            products.nutrition_grade_fr,
 	            products.stores,
                 products.url
-            FROM 
+            FROM
 	            Purbeurre.category, Purbeurre.products, Purbeurre.categories_products
             WHERE
 	            Purbeurre.category.id = Purbeurre.categories_products.id_cat
@@ -68,26 +71,29 @@ class DbReading:
                 """
         cursor.execute(query, (cat_id, prod_id,))
         return cursor.fetchall()
-    
+
     def one_substitute(self, choiseS):
         cursor = self.connect.connection.cursor()
         cursor.execute('USE Purbeurre')
         query = """
-            SELECT 
-                products.id,
-	            products.brands,
-	            products.product_name_fr,
-	            products.nutrition_grade_fr,
-                products.stores,
-                products.url
-            FROM 
-	            Purbeurre.category, Purbeurre.products, Purbeurre.categories_products
+            SELECT
+                    products.id,
+                    products.brands,
+                    products.product_name_fr,
+                    products.nutrition_grade_fr,
+                    products.stores,
+                    products.url
+            FROM
+                    Purbeurre.category, Purbeurre.products,
+                        Purbeurre.categories_products
             WHERE
-	            Purbeurre.category.id = Purbeurre.categories_products.id_cat
-                AND
-                Purbeurre.products.id = Purbeurre.categories_products.id_prod
-                AND
-                Purbeurre.categories_products.id_prod = %s
+                    Purbeurre.category.id =
+                        Purbeurre.categories_products.id_cat
+                    AND
+                    Purbeurre.products.id =
+                        Purbeurre.categories_products.id_prod
+                    AND
+                    Purbeurre.categories_products.id_prod = %s
                 """
         cursor.execute(query, (choiseS,))
         return cursor.fetchall()
@@ -122,14 +128,14 @@ class DbReading:
         cursor = self.connect.connection.cursor()
         cursor.execute('USE Purbeurre')
         query = """
-            SELECT 
+            SELECT
 	            products.id,
 	            products.brands,
 	            products.product_name_fr,
 	            products.nutrition_grade_fr,
 	            products.stores,
 	            products.url
-            FROM 
+            FROM
 	            Purbeurre.products, Purbeurre.favorite
             WHERE
 	            Purbeurre.products.id = Purbeurre.favorite.id_substitute

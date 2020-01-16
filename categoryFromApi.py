@@ -1,5 +1,6 @@
 import requests
 
+
 class CategoryFromApi:
 
     def __init__(self):
@@ -20,7 +21,6 @@ class CategoryFromApi:
         for category in cat_list:
             ordered_cat_list.append(category['name'])
         return ordered_cat_list
-        #print(ordered_cat_list)
 
 
 def main():

@@ -18,18 +18,19 @@ class ProductFromApi:
 
         request = requests.get(self.url, parametres)
         data = request.json()
-        keys = ['id', 'brands', 'product_name_fr', 'nutrition_grade_fr', 'stores', 'url']
+        keys = ['id', 'brands', 'product_name_fr',
+                'nutrition_grade_fr', 'stores', 'url']
         products_list = []
         for element in data['products']:
             product = {}
             for key in keys:
                 product[key] = element.get(key)
-            if all(product.values()):  # teste si toutes les clés de 'products' ont une valeur
+            if all(product.values()):
+                """test if all 'products' keys have a value"""
                 products_list.append(product)
         return products_list
-        #print(products_list)
-        
-                        
+
+
 def main():
     a = ProductFromApi()
     a.get_products("boissons")
