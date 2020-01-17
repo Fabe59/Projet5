@@ -2,7 +2,7 @@ import requests
 
 
 class CategoryFromApi:
-    """Class to download the top ten categories""" 
+    """Class to download the top ten categories"""
 
     def __init__(self):
         self.url = 'https://fr.openfoodfacts.org/categories/'

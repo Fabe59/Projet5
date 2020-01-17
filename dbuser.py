@@ -77,7 +77,7 @@ class DbUser:
         cursor.execute(query, (cat_id, prod_id,))
         return cursor.fetchall()
 
-    def one_substitute(self, choiseS):
+    def one_substitute(self, choiceS):
         """Method to retrieve only the info of the selected product"""
         cursor = self.connect.connection.cursor()
         cursor.execute('USE Purbeurre')
@@ -94,33 +94,53 @@ class DbUser:
             WHERE
                     Purbeurre.products.id = %s
                 """
-        cursor.execute(query, (choiseS,))
+        cursor.execute(query, (choiceS,))
         return cursor.fetchall()
 
-    def add_favorite(self, choiceS):
+    def add_favorite(self, choiceP, choiceS):
         """Method for adding a product to the favorites table"""
-        insert_query = """INSERT INTO Purbeurre.favorite (id_substitute) \
-                            VALUES (%s)"""
+        insert_query = """INSERT INTO Purbeurre.favorite \
+                            (id_compared, id_substitute) VALUES (%s, %s)"""
         cursor = self.connect.connection.cursor()
-        cursor.execute(insert_query, (choiceS,))
+        cursor.execute(insert_query, (choiceP, choiceS,))
         self.connect.connection.commit()
 
-    def favorite(self):
-        """Method for retrieving favorite table products"""
+    def compared(self):
+        """Method for retrieving compared products"""
         cursor = self.connect.connection.cursor()
         cursor.execute('USE Purbeurre')
         query = """
             SELECT
-                products.id,
-                products.brands,
-                products.product_name_fr,
-                products.nutrition_grade_fr,
-                products.stores,
-                products.url
+                    id,
+                    brands,
+                    product_name_fr,
+                    nutrition_grade_fr,
+                    stores,
+                    url
             FROM
-                Purbeurre.products, Purbeurre.favorite
-            WHERE
-                Purbeurre.products.id = Purbeurre.favorite.id_substitute
+                    Purbeurre.favorite
+                    JOIN Purbeurre.products \
+                        ON Purbeurre.favorite.id_compared = id
+                """
+        cursor.execute(query)
+        return cursor.fetchall()
+
+    def favorite(self):
+        """Method for retrieving substituted products"""
+        cursor = self.connect.connection.cursor()
+        cursor.execute('USE Purbeurre')
+        query = """
+            SELECT
+                    id,
+                    brands,
+                    product_name_fr,
+                    nutrition_grade_fr,
+                    stores,
+                    url
+            FROM
+                    Purbeurre.favorite
+                    JOIN Purbeurre.products \
+                        ON Purbeurre.favorite.id_substitute = id
                 """
         cursor.execute(query)
         return cursor.fetchall()

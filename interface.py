@@ -15,7 +15,7 @@ class Interface:
 
     def menu(self):
         """method who display home menu"""
-        print("Bienvenue, que souhaitez faire?\n1 = Substituer un produit \
+        print("Bienvenue, que souhaitez vous faire?\n1 = Substituer un produit \
             \n2 = Revoir les produits déjà substitués \nQ = Quitter")
         choice = input()
 
@@ -24,15 +24,24 @@ class Interface:
         elif choice == "2":
             print("Voici la liste des produits enregistrés "
                   "lors de vos dernières recherches:")
+            compared = self.dbuser.compared()
             fav = self.dbuser.favorite()
-            for prod_id, brand, name, nutriscore, stores, url in fav:
-                print(f"""
-                {prod_id}
-                MARQUE: {brand.upper()}
-                PRODUIT: {name}
-                NUTRISCORE: {nutriscore.upper()}
-                POINTS DE VENTE: {stores}
-                URL: {url}\n""")
+            for idC, brandC, nameC, nutriC, storesC, urlC in compared:
+                print(f"""Vous aviez choisi de substituer:
+                {idC}
+                MARQUE : {brandC.upper()}
+                PRODUIT: {nameC}
+                NUTRISCORE: {nutriC.upper()}
+                POINTS DE VENTE: {storesC}
+                URL: {urlC}""")
+            for idS, brandS, nameS, nutriS, storesS, urlS in fav:
+                print(f"""par:
+                {idS}
+                MARQUE : {brandS.upper()}
+                PRODUIT: {nameS}
+                NUTRISCORE: {nutriS.upper()}
+                POINTS DE VENTE: {storesS}
+                URL: {urlS}\n""")
             self.menu()
         elif choice == "Q":
             print('À bientôt!')
@@ -139,7 +148,7 @@ class Interface:
             print("A bientôt!")
             self.exit()
         elif save == "O":
-            self.dbuser.add_favorite(choiceS)
+            self.dbuser.add_favorite(choiceP, choiceS)
             print("produit sauvegardé\n")
             self.menu()
 

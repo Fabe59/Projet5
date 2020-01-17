@@ -69,8 +69,15 @@ class DbAdmin:
         cursor.execute("USE `Purbeurre`")
         query_table = """
                     CREATE TABLE IF NOT EXISTS `Purbeurre`.`favorite` (
+                    id_compared BIGINT UNSIGNED NOT NULL,
                     id_substitute BIGINT UNSIGNED NOT NULL,
-                    PRIMARY KEY (id_substitute));
+                    PRIMARY KEY (id_compared),
+                    CONSTRAINT `fk_id_compared`
+                        FOREIGN KEY (`id_compared`) \
+                            REFERENCES `products`(`id`),
+                    CONSTRAINT `fk_id_substitute`
+                        FOREIGN KEY (`id_substitute`) \
+                            REFERENCES `products`(`id`));
                     """
         cursor.execute(query_table)
         print("Favorite table successfully created")
@@ -124,4 +131,3 @@ class DbAdmin:
                                 VALUES (%s, %s)""", (cat_id, product['id']))
             self.connect.connection.commit()
         print("Products inserted successfully into Products table")
-
