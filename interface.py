@@ -24,9 +24,9 @@ class Interface:
         elif choice == "2":
             print("Voici la liste des produits enregistrés "
                   "lors de vos dernières recherches:")
-            compared = self.dbuser.compared()
             fav = self.dbuser.favorite()
-            for idC, brandC, nameC, nutriC, storesC, urlC in compared:
+            for idC, brandC, nameC, nutriC, storesC, urlC, \
+                    idS, brandS, nameS, nutriS, storesS, urlS in fav:
                 print(f"""Vous aviez choisi de substituer:
                 {idC}
                 MARQUE : {brandC.upper()}
@@ -34,7 +34,6 @@ class Interface:
                 NUTRISCORE: {nutriC.upper()}
                 POINTS DE VENTE: {storesC}
                 URL: {urlC}""")
-            for idS, brandS, nameS, nutriS, storesS, urlS in fav:
                 print(f"""par:
                 {idS}
                 MARQUE : {brandS.upper()}

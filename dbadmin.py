@@ -71,7 +71,7 @@ class DbAdmin:
                     CREATE TABLE IF NOT EXISTS `Purbeurre`.`favorite` (
                     id_compared BIGINT UNSIGNED NOT NULL,
                     id_substitute BIGINT UNSIGNED NOT NULL,
-                    PRIMARY KEY (id_compared),
+                    PRIMARY KEY (id_compared, id_substitute),
                     CONSTRAINT `fk_id_compared`
                         FOREIGN KEY (`id_compared`) \
                             REFERENCES `products`(`id`),

@@ -102,45 +102,40 @@ class DbUser:
         insert_query = """INSERT INTO Purbeurre.favorite \
                             (id_compared, id_substitute) VALUES (%s, %s)"""
         cursor = self.connect.connection.cursor()
-        cursor.execute(insert_query, (choiceP, choiceS,))
+        cursor.execute("""
+                        SELECT id_compared, id_substitute \
+                        FROM Purbeurre.favorite \
+                        WHERE id_compared = %s \
+                        AND id_substitute = %s""", (choiceP, choiceS))
+        reponse = cursor.fetchone()
+        if not reponse:
+            cursor.execute(insert_query, (choiceP, choiceS,))
         self.connect.connection.commit()
 
-    def compared(self):
+    def favorite(self):
         """Method for retrieving compared products"""
         cursor = self.connect.connection.cursor()
         cursor.execute('USE Purbeurre')
         query = """
             SELECT
-                    id,
-                    brands,
-                    product_name_fr,
-                    nutrition_grade_fr,
-                    stores,
-                    url
+                    compared.id,
+                    compared.brands,
+                    compared.product_name_fr,
+                    compared.nutrition_grade_fr,
+                    compared.stores,
+                    compared.url,
+                    substitute.id,
+                    substitute.brands,
+                    substitute.product_name_fr,
+                    substitute.nutrition_grade_fr,
+                    substitute.stores,
+                    substitute.url
             FROM
                     Purbeurre.favorite
-                    JOIN Purbeurre.products \
-                        ON Purbeurre.favorite.id_compared = id
-                """
-        cursor.execute(query)
-        return cursor.fetchall()
-
-    def favorite(self):
-        """Method for retrieving substituted products"""
-        cursor = self.connect.connection.cursor()
-        cursor.execute('USE Purbeurre')
-        query = """
-            SELECT
-                    id,
-                    brands,
-                    product_name_fr,
-                    nutrition_grade_fr,
-                    stores,
-                    url
-            FROM
-                    Purbeurre.favorite
-                    JOIN Purbeurre.products \
-                        ON Purbeurre.favorite.id_substitute = id
+                    JOIN Purbeurre.products AS compared ON \
+                        Purbeurre.favorite.id_compared = compared.id
+                    JOIN Purbeurre.products AS substitute ON \
+                        Purbeurre.favorite.id_substitute = substitute.id
                 """
         cursor.execute(query)
         return cursor.fetchall()
