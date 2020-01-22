@@ -8,6 +8,7 @@ verify_ssl = true
 [packages]
 requests = "*"
 flake8 = "*"
+unittest = "*"
 
 [requires]
 python_version = "3.8"

@@ -90,16 +90,20 @@ class DbAdmin:
                     INSERT INTO category (name)
                     VALUES (%s)
                     """
-        ids = []
+        cat_ids = []
         for category in ordered_cat_list:
-            cursor.execute(insert_query, (category,))
-            id = (cursor.lastrowid, category)
-            ids.append(id)
+            cursor.execute("""SELECT name FROM Purbeurre.category
+                                WHERE name = %s""", (category,))
+            reponse = cursor.fetchone()
+            if not reponse:
+                cursor.execute(insert_query, (category,))
+                id = (cursor.lastrowid, category)
+                cat_ids.append(id)
         self.connect.connection.commit()
-        return ids
+        return cat_ids
 
     def add_products(self, products_list, cat_id):
-        """method for adding products to the categories table"""
+        """method for adding products to the products table"""
         insert_query = """
                     INSERT INTO products
                         (
@@ -127,6 +131,7 @@ class DbAdmin:
                     product['stores'],
                     product['url']))
                 self.connect.connection.commit()
+            """request to complete the association table"""
             cursor.execute("""INSERT INTO categories_products (id_cat, id_prod)
                                 VALUES (%s, %s)""", (cat_id, product['id']))
             self.connect.connection.commit()

@@ -9,9 +9,7 @@ class DbUser:
         """Category retrieval method"""
         cursor = self.connect.connection.cursor()
         cursor.execute('USE Purbeurre')
-
         query = """SELECT * FROM category ORDER BY category.id"""
-
         cursor.execute(query)
         return cursor.fetchall()
 
@@ -40,7 +38,6 @@ class DbUser:
                     Purbeurre.categories_products.id_cat = %s
             ORDER BY Purbeurre.products.product_name_fr
                 """
-
         cursor.execute(query, (cat_id,))
         return cursor.fetchall()
 
@@ -132,9 +129,9 @@ class DbUser:
                     substitute.url
             FROM
                     Purbeurre.favorite
-                    JOIN Purbeurre.products AS compared ON \
+                    INNER JOIN Purbeurre.products AS compared ON \
                         Purbeurre.favorite.id_compared = compared.id
-                    JOIN Purbeurre.products AS substitute ON \
+                    INNER JOIN Purbeurre.products AS substitute ON \
                         Purbeurre.favorite.id_substitute = substitute.id
                 """
         cursor.execute(query)
