@@ -14,7 +14,7 @@ class ProductFromApi:
             "tagtype_0": "categories",
             "tag_contains_0": "contains",
             "tag_0": cat,
-            "page_size": 1,
+            "page_size": 500,
             "json": 1
             }
 
