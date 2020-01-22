@@ -7,5 +7,5 @@ To setup the program for localhost, one first need to install :
 * Mysql
 
 # How to use it
-`First step`, to configure this program the first time, you must execute `dbinstall.py` to create database and all tables.  
+`First step`, to configure this program for the first time, you must execute `dbinstall.py` to create database and all tables.  
 `Finally`, to run the main program, everytime one wants, just run `interface.py`.
