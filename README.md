@@ -4,7 +4,10 @@ This program was made to complete the Project 5 of the « D.A. - PYTHON » path 
 # How to configure and install this program
 To setup the program for localhost, one first need to install :
 * Python 3
-* Mysql
+* Mysql  
+
+After, initialize the virtual environment with : `pipenv install`
+Then, position yourself in the virtual environment : `pipenv shell`
 
 # How to use it
 `First step`, to configure this program for the first time, you must execute `dbinstall.py` to create database and all tables.  
