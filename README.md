@@ -6,7 +6,7 @@ To setup the program for localhost, one first need to install :
 * Python 3
 * Mysql  
 
-After, initialize the virtual environment with : `pipenv install`
+After, initialize the virtual environment with : `pipenv install`  
 Then, position yourself in the virtual environment : `pipenv shell`
 
 # How to use it
