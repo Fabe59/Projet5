@@ -6,9 +6,15 @@ verify_ssl = true
 [dev-packages]
 
 [packages]
+mysql-connector-python = "*"
 requests = "*"
+<<<<<<< HEAD
 mysql-connector-python = "*"
 flake8 = "*"
+=======
+flake8 = "*"
+unittest = "*"
+>>>>>>> 51709dd2f3a5a4740526458145d75ba076077667
 
 [requires]
 python_version = "3.8"
