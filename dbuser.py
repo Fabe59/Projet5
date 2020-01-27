@@ -69,7 +69,7 @@ class DbUser:
                         (SELECT products.nutrition_grade_fr FROM \
                             Purbeurre.products WHERE id = %s)
             ORDER BY Purbeurre.products.product_name_fr
-            LIMIT 10
+            LIMIT 15
                 """
         cursor.execute(query, (cat_id, prod_id,))
         return cursor.fetchall()

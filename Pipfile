@@ -9,6 +9,7 @@ verify_ssl = true
 requests = "*"
 flake8 = "*"
 unittest = "*"
+mysql-connector-python = "*"
 
 [requires]
 python_version = "3.8"
