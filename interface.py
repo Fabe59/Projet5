@@ -83,7 +83,7 @@ class Interface:
             POINTS DE VENTE: {stores}
             URL: {url}\n""")
         choiceP = self.input_user(
-            "Choisissez un produit parmi la liste en indiquant, "
+            "Choisissez un produit parmi la liste en indiquant "
             "son numéro de produit, "
             "'A' pour revenir au menu des categories, "
             "'Q' pour Quitter : ")
